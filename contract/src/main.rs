@@ -18,12 +18,12 @@ use casper_contract::{
 };
 
 use casper_types::{
-    CLType, //serialized data type inside EntryPoint
-    EntryPoint, // entry point to Smart Contract that gets params on enter
+    CLType,           //serialized data type inside EntryPoint
+    EntryPoint,       // entry point to Smart Contract that gets params on enter
     EntryPointAccess, // who can access Entry Point
-    EntryPointType, 
+    EntryPointType,
     EntryPoints,
-    Key, // account adress (hash)
+    Key,  // account adress (hash)
     URef, // safe access to Smart Contract memory
     U512, // numeric type
 };
@@ -37,31 +37,34 @@ pub fn transfer_amount() {
 
     let account_hash_key: Key = runtime::get_named_arg("account_hash");
     let target_account_hash = account_hash_key.into_account().unwrap();
-    let amount = U512::from(1000000000);
+    let amount = U512::from(1000000000); // hard-coded amount
 
     // system::transfer_to_account exist, but it is not so safe
     system::transfer_from_purse_to_account(source_purse, target_account_hash, amount, None)
         .unwrap_or_revert();
 }
 
-#[no_mangle]
+#[no_mangle] // because we nedd 'call' fn name
 pub extern "C" fn call() {
-    let amount: U512 = runtime::get_named_arg("amount");
-    let source: URef = account::get_main_purse();
+    //this will be fire when Smart Contract start as extern function ('contract.install from js')
+    let amount: U512 = runtime::get_named_arg("amount"); // amout is pass on Smart Contract start as u512 argument
+    let source: URef = account::get_main_purse(); // main account balance
 
-    //create purse
+    //create new empty purse and pass uref
     let second_purse = system::create_purse();
 
-    //fund purse
+    //fund purse - pass from main account to 'second-purse'- it is safe mechanism to interact Smart Contract with account balance
     system::transfer_from_purse_to_purse(source, second_purse, amount, None).unwrap_or_revert();
 
-    let mut named_keys: BTreeMap<String, Key> = BTreeMap::new(); // key is String, and value in Key (account hash) in this map
+    let mut named_keys: BTreeMap<String, Key> = BTreeMap::new(); // key is String 'second_purse', and value in Key (account hash) in this map
 
     //store purse into contract's named_keys
     named_keys.insert(String::from("second_purse"), second_purse.into());
 
-    // Create entry point
+    // Create new and empty entry points
     let mut entry_points = EntryPoints::new();
+
+    // one entry point - transfer amount from purse to account
     entry_points.add_entry_point(EntryPoint::new(
         "transfer_amount",
         vec![],
@@ -70,7 +73,10 @@ pub extern "C" fn call() {
         EntryPointType::Contract,
     ));
 
+    // LOCKED contract never can be upgraded
     let (stored_contract_hash, _) =
         storage::new_locked_contract(entry_points, Some(named_keys), None, None);
+    
+    // save Smart Contract in runtime as `transfer_contract`
     runtime::put_key("transfer_contract", stored_contract_hash.into());
 }
