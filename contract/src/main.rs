@@ -35,13 +35,18 @@ pub fn transfer_amount() {
         .into_uref()
         .unwrap();
 
+    let transfer_amount: U512 = runtime::get_named_arg("amount");
     let account_hash_key: Key = runtime::get_named_arg("account_hash");
     let target_account_hash = account_hash_key.into_account().unwrap();
-    let amount = U512::from(1000000000); // hard-coded amount
 
     // system::transfer_to_account exist, but it is not so safe
-    system::transfer_from_purse_to_account(source_purse, target_account_hash, amount, None)
-        .unwrap_or_revert();
+    system::transfer_from_purse_to_account(
+        source_purse,
+        target_account_hash,
+        transfer_amount,
+        None,
+    )
+    .unwrap_or_revert();
 }
 
 #[no_mangle] // because we nedd 'call' fn name
@@ -75,8 +80,8 @@ pub extern "C" fn call() {
 
     // LOCKED contract never can be upgraded
     let (stored_contract_hash, _) =
-        storage::new_locked_contract(entry_points, Some(named_keys), None, None);
-    
+        storage::new_contract(entry_points, Some(named_keys), None, None);
+
     // save Smart Contract in runtime as `transfer_contract`
-    runtime::put_key("transfer_contract", stored_contract_hash.into());
+    runtime::put_key("transfer_contract_with_dynamic_amount", stored_contract_hash.into());
 }
