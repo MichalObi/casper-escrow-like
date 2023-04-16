@@ -17,7 +17,7 @@ The `CLValueBuilder` object is used to build the argument value, args, which is 
 
 To deploy and interact with the smart contract, follow these steps:
 
-1)Install Rust and the cargo toolchain on your computer.
+1) Install Rust and the cargo toolchain on your computer.
 
 2) Clone the project repository to your computer and navigate to the project directory.
 
