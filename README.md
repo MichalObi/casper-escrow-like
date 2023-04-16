@@ -25,11 +25,11 @@ To deploy and interact with the smart contract, follow these steps:
 
 4) Install Node.js and npm on your computer.
 
-5) Install the casper-js-sdk package by running the command npm install `casper-js-sdk`.
+5) Install the casper-js-sdk package by running the command `npm install casper-js-sdk`.
 
 6) Load your private key into the keys/secret_key.pem file.
 
 7) Run the `install()` function in the node.js file to deploy the smart contract to the blockchain.
 
 ## Conclusion
-This smart contract project demonstrates how to safely transfer CSPR tokens using a unique approach of creating a "second purse" to interact with the account balance. The project is written in Rust and can be compiled to a WebAssembly binary that can be deployed to the Casper blockchain network. With the `casper-js-sdk` package, it is easy to deploy and interact with the smart contract on the blockchain.
+This smart contract project demonstrates how to safely transfer CSPR tokens using a unique approach of creating a "second purse" to interact with the account balance. The project is written in Rust and can be compiled to a WebAssembly binary that can be deployed to the Casper blockchain network. With the casper-js-sdk package, it is easy to deploy and interact with the smart contract on the blockchain.
