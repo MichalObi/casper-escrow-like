@@ -5,6 +5,14 @@ const contract = new Contracts.Contract(client); // Smart Contract object, to in
 const keys = Keys.Ed25519.loadKeyPairFromPrivateFile('./keys/secret_key.pem'); // need secret key to sign every transaction passed to Smart Contract on blockchain 
 const wasm = new Uint8Array(fs.readFileSync('./contract/target/wasm32-unknown-unknown/release/contract.wasm')); // WASM Smart Contract binary compiled from Rust code 
 
+const express = require('express'),
+    app = express(),
+    cors = require('cors'),
+    port = 2761;
+
+app.use(express.json());
+app.use(cors());
+
 async function install() {
     // prepare Smart Contract arguments - pass only one variable 'amout' with value '123'
     const args = RuntimeArgs.fromMap({ 'amount': CLValueBuilder.u512(9000000000) });
@@ -75,27 +83,13 @@ async function getAccountInfo() {
     console.log('balance', balance);
 }
 
-getAccountInfo()
-    .then(info => console.log('info', info))
-    .catch(error => console.log('error', error));
+// getAccountInfo()
+//     .then(info => console.log('info', info))
+//     .catch(error => console.log('error', error));
 
-// for FE
-// function connectSigner() {
-//     Signer
-//         .isConnected()
-//         .then(s => {
-//             if (s === false) {
-//                 Signer.sendConnectionRequest();
-//             } else {
-//                 Signer
-//                     .getActivePublicKey()
-//                     .then(pubKey => {
-//                         console.log('Public key is' + pubKey);
-//                     })
-//                     .catch(({ message }) => console.log(message));
-//             }
-//         })
-//         .catch(({ message }) => console.log(message));
-// }
 
-// connectSigner();
+app.get('/', async (req, res) => {
+
+});
+
+app.listen(port, () => console.log(`App listening on port ${port}`));
