@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { Signer } from 'casper-js-sdk';
 
 @Component({
@@ -8,23 +8,32 @@ import { Signer } from 'casper-js-sdk';
 })
 
 export class ConnectSignerComponent {
-  title = 'connect-signer';;
+  title = 'connect-signer';
+
+  @Output() newPublicKeyEvent = new EventEmitter<string>();
+  @Output() newSignerErrorEvent = new EventEmitter<string>();
+
+  addPublicKey(publicKey: string) {
+    this.newPublicKeyEvent.emit(publicKey);
+  }
+
+  addSignerError(error: string) {
+    this.newSignerErrorEvent.emit(error);
+  }
 
   connectSigner() {
     Signer
-        .isConnected()
-        .then(s => {
-            if (s === false) {
-                Signer.sendConnectionRequest();
-            } else {
-                Signer
-                    .getActivePublicKey()
-                    .then(pubKey => {
-                        console.log('Public key is' + pubKey);
-                    })
-                    .catch(({ message }) => console.log(message));
-            }
-        })
-        .catch(({ message }) => console.log(message));
+      .isConnected()
+      .then(s => {
+        if (s === false) {
+          Signer.sendConnectionRequest();
+        } else {
+          Signer
+            .getActivePublicKey()
+            .then(pubKey => this.addPublicKey(pubKey))
+            .catch(({ message }) => this.addSignerError(message));
+        }
+      })
+      .catch(({ message }) => this.addSignerError(message));
   }
 }
