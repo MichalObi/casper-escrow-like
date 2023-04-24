@@ -21,6 +21,6 @@ export class AppComponent {
 
   addPublicKey(publicKey: string) {
     this.publicKey = publicKey;
-    this.router.navigate(['/account-info']);
+    this.router.navigate(['/account-info', {publicKey}]);
   }
 }
