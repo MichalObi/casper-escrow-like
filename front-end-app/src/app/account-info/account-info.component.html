@@ -1,1 +1,9 @@
 <p>Your public key from Signer is: {{publicKey}}</p>
+
+<div *ngIf="balance !== undefined">
+    Balance: {{ balance }}
+  </div>
+  
+  <div *ngIf="balance === undefined">
+    Loading balance...
+  </div>

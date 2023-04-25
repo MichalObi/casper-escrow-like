@@ -1,5 +1,5 @@
 const fs = require('fs'); // handle files
-const { CasperClient, Contracts, Keys, RuntimeArgs, CLValueBuilder, CLKey, CLAccountHash, Signer } = require('casper-js-sdk'); // handle Casper
+const { CasperClient, Contracts, Keys, RuntimeArgs, CLValueBuilder, CLKey, CLPublicKey, CLAccountHash } = require('casper-js-sdk'); // handle Casper
 const client = new CasperClient('http://89.58.52.98:7777/rpc'); // Casper node client instance 
 const contract = new Contracts.Contract(client); // Smart Contract object, to interact with Casper
 const keys = Keys.Ed25519.loadKeyPairFromPrivateFile('./keys/secret_key.pem'); // need secret key to sign every transaction passed to Smart Contract on blockchain 
@@ -76,20 +76,24 @@ async function transferAmount() {
 //     .catch(error => console.log('error', error));
 
 
-async function getAccountInfo() {
-    const accountInfo = await client.balanceOfByAccountHash('301982af72272bd9d403d6c8753667e2bc9d7d781f99179784f4be45f99d2419');
-    const balance = parseInt(accountInfo._hex, 16);
+async function getAccountInfo(publicKey) {
+    if (publicKey && publicKey.length) {
+        const key = CLPublicKey.fromHex(publicKey);
+        const accountInfo = await client.balanceOfByPublicKey(key);
+        const balance = parseInt(accountInfo._hex, 16);
 
-    console.log('balance', balance);
+        return { balance };
+    }
 }
 
 // getAccountInfo()
 //     .then(info => console.log('info', info))
 //     .catch(error => console.log('error', error));
 
-
-app.get('/', async (req, res) => {
-
-});
-
 app.listen(port, () => console.log(`App listening on port ${port}`));
+
+app.get('/account-info', async (req, res) => {
+    const balance = await getAccountInfo(req.query.publicKey);
+
+    return res.json(balance);
+});
