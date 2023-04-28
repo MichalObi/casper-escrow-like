@@ -1,9 +1,19 @@
-<p>Your public key from Signer is: {{publicKey}}</p>
+<div class="terminal">
+  <pre>Your public key from received Signer is: </pre>
+  <pre>{{publicKey}}</pre>
+  <div *ngIf="balance !== undefined">
+    <pre>Balance: {{ balance }} CSPR</pre>
+  </div>
+  <div *ngIf="balance === undefined">
+    <pre>Loading balance...</pre>
+  </div>
+</div>
 
 <div *ngIf="balance !== undefined">
-    Balance: {{ balance }}
-  </div>
-  
-  <div *ngIf="balance === undefined">
-    Loading balance...
-  </div>
+  <p>Select amount of CSPR to transfer</p>
+  <mat-slider min="1" max="{{ balance }}" step="0.5" value="1.5" showTickMarks discrete>
+    <input matSliderThumb [(ngModel)]="transferAmount">
+  </mat-slider>
+
+  <button (click)="transferToAccount()" class="btn btn-secondary">Transfer to account</button>
+</div>

@@ -366,18 +366,10 @@
   <app-connect-signer (newPublicKeyEvent)="addPublicKey($event)" (newSignerErrorEvent)="addSignerError($event)">
   </app-connect-signer>
 
-  <!-- Terminal -->
-  <div class="terminal" [ngSwitch]="selection.value">
-
-  </div>
-
   <!-- Links -->
   <div class="card-container">
 
   </div>
-
-  <!-- The routed views render in the <router-outlet>-->
-  <router-outlet></router-outlet>
 
   <!-- Footer -->
   <footer>
@@ -391,6 +383,9 @@
       transform="translate(142.69 -634.312)" fill="#eee" />
   </svg>
 
+  <!-- The routed views render in the <router-outlet>-->
+  <router-outlet></router-outlet>
+
 </div>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
@@ -400,5 +395,3 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-<router-outlet></router-outlet>

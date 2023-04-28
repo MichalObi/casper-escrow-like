@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { ConnectSignerComponent } from './connect-signer/connect-signer.component';
 import { AccountInfoComponent } from './account-info/account-info.component';
 import { NoPublicKeyComponent } from './no-public-key/no-public-key.component';
+import {MatSliderModule} from '@angular/material/slider';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,10 @@ import { NoPublicKeyComponent } from './no-public-key/no-public-key.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    MatSliderModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

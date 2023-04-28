@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AccountInfo } from './account-info.interface';
-import {CLPublicKey} from 'casper-js-sdk';
 
 @Component({
   selector: 'app-account-info',
@@ -15,6 +14,7 @@ import {CLPublicKey} from 'casper-js-sdk';
 export class AccountInfoComponent {
   publicKey: String;
   balance: number | undefined;
+  transferAmount: number | undefined = 0;
 
   constructor(private _Activatedroute: ActivatedRoute, private http: HttpClient) {
     const publicKey = this._Activatedroute.snapshot.paramMap.get('publicKey');
@@ -24,6 +24,16 @@ export class AccountInfoComponent {
 
   ngOnInit() {
     this.getAccountInfo();
+  }
+
+  updateTransferAmount(event: any) {
+   this.transferAmount = Number(event.target.ariaValueText);
+  }
+
+  transferToAccount() {
+    const transferAmount = this.transferAmount;
+
+    console.log('transferAmount', transferAmount);
   }
 
   getAccountInfo() {
