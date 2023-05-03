@@ -27,13 +27,21 @@ export class AccountInfoComponent {
   }
 
   updateTransferAmount(event: any) {
-   this.transferAmount = Number(event.target.ariaValueText);
+    this.transferAmount = Number(event.target.ariaValueText);
   }
 
   transferToAccount() {
-    const transferAmount = this.transferAmount;
+    const url = 'http://localhost:2761/transfer-to-account', { transferAmount } = this;
 
-    console.log('transferAmount', transferAmount);
+    this.http.post(url, {transferAmount})
+      .pipe(
+        tap(data => console.log(data)), // log response
+        catchError(error => {
+          console.log('error', error);
+          return error;
+        })
+      )
+      .subscribe((data) => console.log('data', data));
   }
 
   getAccountInfo() {
@@ -47,6 +55,6 @@ export class AccountInfoComponent {
           return of<AccountInfo>({ balance: 0 }); // provide default value
         })
       )
-      .subscribe((data) => this.balance = data ? data.balance : 0)
+      .subscribe((data) => this.balance = data ? data.balance : 0);
   }
 }

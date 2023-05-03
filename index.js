@@ -40,7 +40,7 @@ async function install() {
 async function transferAmount(amountToTransfer) {
     contract.setContractHash('hash-bf49ece348c7df1f80ee40f9095debbf5551ef591542d54f65385b5c6186e479');
 
-    const amount = amountToTransfer * 1000000000; // 2 CSPR
+    const amount = amountToTransfer * 1000000000; // CSPR
 
     // convert from account hash to CLKey accepted by Smart Contract
     const receiverAccountHash = '63b82f736afb9ae7177398ed8dd18cc662119d52ad0c509c3881d83b606d3b61';
@@ -99,9 +99,8 @@ app.get('/account-info', async (req, res) => {
 });
 
 app.post('/transfer-to-account', async (req, res) => {
-    console.log('test', req.body.transferAmount);
 
-    // const transfer = await transferAmount(req.body.transferAmount);
+    const transfer = await transferAmount(req.body.transferAmount);
 
-    // return res.json({transfer});
+    return res.json({transfer});
 });
