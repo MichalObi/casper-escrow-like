@@ -1,5 +1,6 @@
 const fs = require('fs'); // handle files
-const { CasperClient, Contracts, Keys, RuntimeArgs, CLValueBuilder, CLKey, CLPublicKey, CLAccountHash } = require('casper-js-sdk'); // handle Casper
+const util = require('util')
+const { CasperClient, Contracts, Keys, RuntimeArgs, CLValueBuilder, CLKey, CLPublicKey, CLAccountHash, BalanceServiceByJsonRPC } = require('casper-js-sdk'); // handle Casper
 const client = new CasperClient('http://89.58.52.98:7777/rpc'); // Casper node client instance 
 const contract = new Contracts.Contract(client); // Smart Contract object, to interact with Casper
 const keys = Keys.Ed25519.loadKeyPairFromPrivateFile('./keys/secret_key.pem'); // need secret key to sign every transaction passed to Smart Contract on blockchain 
@@ -14,12 +15,12 @@ app.use(express.json());
 app.use(cors());
 
 async function install() {
-    // prepare Smart Contract arguments - pass only one variable 'amout' with value '123'
+    // prepare Smart Contract arguments - pass only one variable 'amout' with value '9'
     const args = RuntimeArgs.fromMap({ 'amount': CLValueBuilder.u512(9000000000) });
 
     const deploy = contract.install(
         wasm, // smart contract binary
-        args, // smart contract arguments (amount: 123)
+        args, // smart contract arguments (amount: 9)
         '20000000000', // 20 CSPR - transaction cost
         keys.publicKey, // public key <as name sugest>
         'casper-test', // testnet blockchain network
@@ -82,7 +83,7 @@ async function getAccountInfo(publicKey) {
         const accountInfo = await client.balanceOfByPublicKey(key);
         const balance = parseInt(accountInfo._hex, 16);
 
-        return balance > 0 ? { balance:  balance / 1000000000 } : { balance: 0}; // to get full CSPR
+        return balance > 0 ? { balance: balance / 1000000000 } : { balance: 0 }; // to get full CSPR
     }
 }
 
@@ -90,7 +91,16 @@ async function getAccountInfo(publicKey) {
 //     .then(info => console.log('info', info))
 //     .catch(error => console.log('error', error));
 
-app.listen(port, () => console.log(`App listening on port ${port}`));
+async function getContractPurseAmout() {
+    contract.setContractHash('hash-bf49ece348c7df1f80ee40f9095debbf5551ef591542d54f65385b5c6186e479');
+    const purse = await contract.queryContractData(['second_purse']);
+    return purse;
+}
+
+app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+    getContractPurseAmout();
+});
 
 app.get('/account-info', async (req, res) => {
     const balance = await getAccountInfo(req.query.publicKey);
@@ -102,5 +112,5 @@ app.post('/transfer-to-account', async (req, res) => {
 
     const transfer = await transferAmount(req.body.transferAmount);
 
-    return res.json({transfer});
+    return res.json({ transfer });
 });
