@@ -14,6 +14,7 @@ import { AccountInfo } from './account-info.interface';
 export class AccountInfoComponent {
   publicKey: String;
   balance: number | undefined;
+  purse: number | undefined;
   transferAmount: number | undefined = 0;
 
   constructor(private _Activatedroute: ActivatedRoute, private http: HttpClient) {
@@ -33,7 +34,7 @@ export class AccountInfoComponent {
   transferToAccount() {
     const url = 'http://localhost:2761/transfer-to-account', { transferAmount } = this;
 
-    this.http.post(url, {transferAmount})
+    this.http.post(url, { transferAmount })
       .pipe(
         tap(data => console.log(data)), // log response
         catchError(error => {
@@ -52,9 +53,12 @@ export class AccountInfoComponent {
         tap(data => console.log(data)), // log response
         catchError(error => {
           console.log(error);
-          return of<AccountInfo>({ balance: 0 }); // provide default value
+          return of<AccountInfo>({ balance: 0, purse: 0 }); // provide default value
         })
       )
-      .subscribe((data) => this.balance = data ? data.balance : 0);
+      .subscribe((data) => {
+        this.balance = data ? data.balance : 0;
+        this.purse = data ? data.purse : 0;
+      });
   }
 }
