@@ -34,28 +34,6 @@
     flex: 1;
   }
 
-  .toolbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    background-color: #1976d2;
-    color: white;
-    font-weight: 600;
-  }
-
-  .toolbar img {
-    margin: 0 16px;
-  }
-
-  .toolbar #youtube-logo {
-    height: 40px;
-    margin: 0 16px;
-  }
-
   .content {
     display: flex;
     margin: 82px auto 32px;
@@ -78,13 +56,6 @@
     fill: #888;
   }
 
-  .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 16px;
-  }
-
   .card {
     all: unset;
     border-radius: 4px;
@@ -102,26 +73,9 @@
     line-height: 24px;
   }
 
-  .card-container .card:not(:last-child) {
-    margin-right: 0;
-  }
-
   .card.card-small {
     height: 16px;
     width: 168px;
-  }
-
-  .card-container .card:not(.highlight-card) {
-    cursor: pointer;
-  }
-
-  .card-container .card:not(.highlight-card):hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
-  }
-
-  .card-container .card:not(.highlight-card):hover .material-icons path {
-    fill: rgb(105, 103, 103);
   }
 
   .card.highlight-card {
@@ -293,16 +247,12 @@
   }
 </style>
 
-<!-- Toolbar -->
 <div class="toolbar" role="banner">
-  <span>Casper Escrow Test Transfer</span>
+  <span>Casper-network "escrow" contract / test transfer app!</span>
 </div>
 
 <div class="content" role="main">
-
-  <!-- Highlight Card -->
   <div class="card highlight-card card-small">
-
     <svg id="rocket" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678" viewBox="0 0 101.678 101.678">
       <title>Rocket Ship</title>
       <g id="Group_83" data-name="Group 83" transform="translate(-141 -696)">
@@ -331,49 +281,12 @@
 
   </div>
 
-  <!-- Resources -->
-  <h2>Resources</h2>
-  <p>Here are some links to help you get started:</p>
-
-  <div class="card-container">
-    <a class="card" target="_blank" rel="noopener" href="https://angular.io/tutorial">
-      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z" />
-      </svg>
-      <span>Learn Angular</span>
-      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg> </a>
-
-    <a class="card" target="_blank" rel="noopener" href="https://angular.io/cli">
-      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
-      </svg>
-      <span>CLI Documentation</span>
-      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg>
-    </a>
-
-  </div>
-
-  <!-- Next Steps -->
-  <h2>Next Steps</h2>
-  <p>What do you want to do next with your app?</p>
-
-  <input type="hidden" #selection>
-
   <app-connect-signer (newPublicKeyEvent)="addPublicKey($event)" (newSignerErrorEvent)="addSignerError($event)">
   </app-connect-signer>
 
-  <!-- Links -->
-  <div class="card-container">
-
-  </div>
-
   <!-- Footer -->
   <footer>
-    Created by
+    Created by Micheal Obi
   </footer>
 
   <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">

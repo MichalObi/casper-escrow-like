@@ -1,9 +1,17 @@
 <div class="terminal">
   <pre>Your public key from received Signer is: </pre>
-  <pre>{{publicKey}}</pre>
+  <pre>{{ publicKey}}</pre>
+
+  <div *ngIf="casperExchangeRate !== undefined">
+    <pre>Current exchange rate: {{ casperExchangeRate }} USD for 1 CSPR</pre>
+  </div>
+
+  <div *ngIf="casperExchangeRate === undefined">
+    <pre>Loading casperExchangeRate...</pre>
+  </div>
 
   <div *ngIf="balance !== undefined">
-    <pre>Your account Balance: {{ balance }} CSPR</pre>
+    <pre>Your account Balance: {{ balance }} CSPR ({{ balance * casperExchangeRate }} USD)</pre>
   </div>
 
   <div *ngIf="balance === undefined">
@@ -11,7 +19,7 @@
   </div>
 
   <div *ngIf="purse !== undefined">
-    <pre>Smart Contract Purse (Max transfer): {{ purse }} CSPR</pre>
+    <pre>Smart Contract Purse (Max available transfer): {{ purse }} CSPR ({{ purse * casperExchangeRate }} USD)</pre>
   </div>
 
   <div *ngIf="purse === undefined">
@@ -21,10 +29,12 @@
 </div>
 
 <div *ngIf="purse !== undefined">
-  <p>Select amount of CSPR to transfer</p>
-  <mat-slider min="1" max="{{ purse }}" step="0.5" value="1.5" showTickMarks discrete>
-    <input matSliderThumb [(ngModel)]="transferAmount">
-  </mat-slider>
-
-  <button (click)="transferToAccount()" class="btn btn-secondary">Transfer to account</button>
+  <div class="transfer-slider">
+    <p>Select amount of CSPR to transfer</p>
+    <mat-slider min="1" max="{{ purse }}" step="0.5" value="1.5" showTickMarks discrete>
+      <input matSliderThumb [(ngModel)]="transferAmount">
+    </mat-slider>
+  
+    <button (click)="transferToAccount()" class="btn btn-secondary">Transfer to account</button>
+  </div>
 </div>

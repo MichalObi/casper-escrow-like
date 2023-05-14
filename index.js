@@ -1,6 +1,6 @@
 const fs = require('fs'); // handle files
 const { CasperClient, Contracts, Keys, RuntimeArgs, CLValueBuilder, CLKey, CLPublicKey, CLAccountHash, CasperServiceByJsonRPC } = require('casper-js-sdk'); // handle Casper
-const nopdeAdress = 'http://89.58.52.98:7777/rpc';
+const nopdeAdress = 'http://89.58.52.245:7777/rpc';
 const client = new CasperClient(nopdeAdress); // Casper node client instance 
 const contract = new Contracts.Contract(client); // Smart Contract object, to interact with Casper
 const keys = Keys.Ed25519.loadKeyPairFromPrivateFile('./keys/secret_key.pem'); // need secret key to sign every transaction passed to Smart Contract on blockchain 

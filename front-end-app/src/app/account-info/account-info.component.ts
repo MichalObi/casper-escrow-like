@@ -16,11 +16,14 @@ export class AccountInfoComponent {
   balance: number | undefined;
   purse: number | undefined;
   transferAmount: number | undefined = 0;
+  casperExchangeRate: number = 0;
 
   constructor(private _Activatedroute: ActivatedRoute, private http: HttpClient) {
     const publicKey = this._Activatedroute.snapshot.paramMap.get('publicKey');
+    const casperExchangeRate = this._Activatedroute.snapshot.paramMap.get('casperExchangeRate');
 
     this.publicKey = publicKey ? publicKey : '';
+    this.casperExchangeRate = casperExchangeRate ? Number(casperExchangeRate) : 0;
   }
 
   ngOnInit() {
